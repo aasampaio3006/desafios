@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,11 @@ import java.util.stream.Collectors;
 
 public class Main {
 
-	private List<Jogador> jogadores = getJogadores();
+	private List<Jogador> jogadores;
+	
+	public Main() {
+		this.jogadores = getJogadores();
+	}
 
 	// Quantas nacionalidades (coluna `nationality`) diferentes existem no arquivo?
 	public int q1() {
@@ -42,9 +47,8 @@ public class Main {
 
 	// Liste o primeiro nome (coluna `full_name`) dos 20 primeiros jogadores.
 	public List<String> q3() {
-		
-		List<String> nomes = new ArrayList<String>();
 
+		List<String> nomes = new ArrayList<String>();
 		for (int i = 0; i <= jogadores.size(); i++) {
 			if (i < 20) {
 				nomes.add(jogadores.get(i).getFull_name());
@@ -56,7 +60,12 @@ public class Main {
 	// Quem são os top 10 jogadores que possuem as maiores cláusulas de rescisão?
 	// (utilize as colunas `full_name` e `eur_release_clause`)
 	public List<String> q4() {
-		return null;
+		
+		return jogadores.stream()
+				.sorted(Comparator.comparingDouble(Jogador::getEur_release_clause)
+				.reversed())
+				.limit(10)
+				.map(Jogador::getFull_name).collect(Collectors.toList());
 	}
 
 	// Quem são os 10 jogadores mais velhos (use como critério de desempate o
@@ -73,48 +82,43 @@ public class Main {
 		return null;
 	}
 
-	public List<Jogador> getJogadores() {
+	public static List<Jogador> getJogadores() {
 
-		String csvFile = "C:\\Users\\andrade.sampaio\\codenation\\java-3\\src\\main\\resources\\data.csv";
-		BufferedReader br = null;
+		String csvFile = System.getProperty("user.dir") + "/src/main/resources/data.csv";
 		String line = "";
 		String cvsSplitBy = ",";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		List<Jogador> jogadores = new ArrayList<Jogador>();
 
-		try {
-			br = new BufferedReader(new FileReader(csvFile));
-			while ((line = br.readLine()) != null) {
+		try (BufferedReader in = new BufferedReader(new FileReader(csvFile))) {
+
+			while ((line = in.readLine()) != null) {
 
 				Jogador jogador = new Jogador();
-
 				String[] country = line.split(cvsSplitBy);
+
 				if (!"ID".contains(country[0])) {
 					jogador.setFull_name(country[2]);
 					jogador.setClub(country[3]);
-					jogador.setAge(Long.parseLong(country[6]));
+					jogador.setAge(Integer.parseInt(country[6]));
 					jogador.setBirth_date(LocalDate.parse(country[8], formatter));
 					jogador.setNationality(country[14]);
 					jogador.setEur_wage(Double.parseDouble(country[17]));
-					jogador.setEur_release_clause(country[18]);
+					//jogador.setEur_release_clause(country[18]);
+					if (country[18].isEmpty()) {
+						jogador.setEur_release_clause(0.0);
+					}else {
+					jogador.setEur_release_clause(Double.parseDouble(country[18]));
+					}
+					
 					jogadores.add(jogador);
 				}
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
 		}
+
 		return jogadores;
-
 	}
-
 }

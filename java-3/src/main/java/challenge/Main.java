@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -72,14 +73,30 @@ public class Main {
 	// campo `eur_wage`)?
 	// (utilize as colunas `full_name` e `birth_date`)
 	public List<String> q5() {
-		return null;
+		
+		return jogadores.stream()
+				.sorted(Comparator.comparingInt(Jogador::getAge)
+				.reversed())
+				.limit(10)
+				.map(Jogador::getFull_name).collect(Collectors.toList());
 	}
 
 	// Conte quantos jogadores existem por idade. Para isso, construa um mapa onde
 	// as chaves são as idades e os valores a contagem.
 	// (utilize a coluna `age`)
 	public Map<Integer, Integer> q6() {
-		return null;
+		
+		Map<Integer, Integer> idades = new HashMap<>();
+		
+		jogadores.forEach(jogador -> {
+			if (!idades.containsKey(jogador.getAge())) {
+				idades.put(jogador.getAge(), 1);
+			} else {
+				idades.put(jogador.getAge(), idades.get(jogador.getAge()) + 1);
+			}
+		});
+		return idades;
+
 	}
 
 	public static List<Jogador> getJogadores() {

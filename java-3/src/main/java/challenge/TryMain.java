@@ -1,11 +1,8 @@
 package challenge;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public class TryMain {
 
@@ -14,13 +11,14 @@ public class TryMain {
 		Main main = new Main();
 
 		List<Jogador> jogadores = main.getJogadores();
-		// Set<Double> salarios = new HashSet<Double>();
+	//	Map<Integer, Integer> idades = new HashMap<>();
 		
-		List<String> salarios = jogadores.stream()
-				.sorted(Comparator.comparingDouble(Jogador::getEur_release_clause)
-				.reversed())
-				.limit(10)
-				.map(Jogador::getFull_name).collect(Collectors.toList());
+		
+//		Map<Integer, Long> idades = jogadores.stream().
+//				collect(Collectors.groupingBy(Jogador::getAge, Collectors.counting()));
+//		
+//		
+//		System.out.println(idades);
 		
 //		     jogadores.stream()
 //		        .sorted(Comparator.comparing(Jogador::getEur_release_clause)
@@ -30,10 +28,10 @@ public class TryMain {
 //		        .collect(Collectors.toList());    
 //		        
 //		        
-		for (String jogador : salarios) {
-			System.out.println(jogador);
-		}
-		
+//		for (String jogador : salarios) {
+//			System.out.println(jogador);
+//		}
+//		
 		
 		//List<String> clubs = new  ArrayList<String>();
 		

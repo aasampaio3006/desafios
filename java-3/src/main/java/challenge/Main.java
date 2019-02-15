@@ -75,8 +75,8 @@ public class Main {
 	public List<String> q5() {
 		
 		return jogadores.stream()
-				.sorted(Comparator.comparingInt(Jogador::getAge)
-				.reversed())
+				.sorted(Comparator.comparing(Jogador::getBirth_date)
+				.thenComparing(Jogador::getEur_wage))
 				.limit(10)
 				.map(Jogador::getFull_name).collect(Collectors.toList());
 	}

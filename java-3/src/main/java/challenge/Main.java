@@ -57,7 +57,6 @@ public class Main {
 		}
 		return nomes;
 	}
-
 	// Quem são os top 10 jogadores que possuem as maiores cláusulas de rescisão?
 	// (utilize as colunas `full_name` e `eur_release_clause`)
 	public List<String> q4() {
@@ -68,7 +67,6 @@ public class Main {
 				.limit(10)
 				.map(Jogador::getFull_name).collect(Collectors.toList());
 	}
-
 	// Quem são os 10 jogadores mais velhos (use como critério de desempate o
 	// campo `eur_wage`)?
 	// (utilize as colunas `full_name` e `birth_date`)
